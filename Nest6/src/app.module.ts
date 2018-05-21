@@ -7,6 +7,7 @@ import {UsuarioService} from "./usuario.service";
 import {LogMiddleware} from "./log.middleware";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {UsuarioEntity} from "./usuario/usuario.entity";
+import {FotoEntity} from "./foto/foto.entity";
 
 
 @Module({
@@ -22,7 +23,7 @@ import {UsuarioEntity} from "./usuario/usuario.entity";
           synchronize: true,
           ssl: true,
       }),
-      TypeOrmModule.forFeature([UsuarioEntity])
+      TypeOrmModule.forFeature([UsuarioEntity,FotoEntity])
   ],
   controllers: [AppController, UsuarioController,ParametrosController],
   providers: [AppService,UsuarioService],
