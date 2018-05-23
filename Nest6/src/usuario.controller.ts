@@ -1,6 +1,8 @@
-import {Controller, Get, HttpCode, Post, Req} from "@nestjs/common";
+import {Body, Controller, Get, HttpCode, Post, Req} from "@nestjs/common";
 import {Res} from "@nestjs/common/utils/decorators/route-params.decorator";
 import {UsuarioService} from "./usuario.service";
+import {UsuarioPipe} from "./Pipes/usuario.pipe";
+import {USUARIO_SCHEMA} from "./usuario/usuario.schema";
 
 @Controller('Usuario')
 export class UsuarioController{
@@ -29,14 +31,8 @@ export class UsuarioController{
     }
 
     @Post('crearUsuario')
-    crearUsuario(@Req() request,@Res() response){
-        const nuevoUsuario ={
-            nombre: request.query.nombre,
-            apellido: request.query.apellido,
-            edad: request.query.edad
-        };
-        const usuarioCreado = this._usuarioService.crearUsuario(nuevoUsuario);
-
-        return response.status(201).send(usuarioCreado);
+    crearUsuario(@Body(new UsuarioPipe(USUARIO_SCHEMA)) nuevoUsuario){
+        this._usuarioService.crearUsuario(nuevoUsuario);
+        return nuevoUsuario;
     }
 }
