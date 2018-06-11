@@ -7,6 +7,7 @@ import {CrearUsuarioGuard} from "./guards/crear-usuario.guard";
 
 @Controller('Usuario')
 @UseGuards(CrearUsuarioGuard)
+
 export class UsuarioController{
     usuario ={
         nombre: 'marcelo',
@@ -22,8 +23,7 @@ export class UsuarioController{
 
     @HttpCode(202)
     @Get('mostrar')
-    @ReflectMetadata('permisos', {permisos:'publico',
-                                            roles:['usuario','administrador']})
+    @ReflectMetadata('permisos', {permisos:'publico', roles:['usuario','administrador']})
     mostrarUsuario(@Res() response){
         const usuarios= this._usuarioService.mostrarUsuario();
         return response.send(usuarios);

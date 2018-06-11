@@ -12,7 +12,7 @@ export class CrearUsuarioGuard implements CanActivate{
         const cabecera = request.headers;
 
 
-        const permisos = this.reflector.get<string[]>('permisos',context.getHandler());
+        const permisos = this.reflector.get('permisos',context.getHandler());
         console.log('Permisos',permisos);
 
 
