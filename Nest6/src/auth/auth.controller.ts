@@ -1,54 +1,85 @@
 import {BadRequestException, Body, Controller, HttpCode, HttpStatus, Post} from "@nestjs/common";
 import {JwtService} from "../servicios/jwt.service";
 
-@Controller('auth')
+@Controller('Auth')
 export class AuthController {
-
-    constructor (private _jwtService: JwtService){}
+    constructor(
+        private _jwtService: JwtService
+    ) {
+    }
 
     @Post('login')
     @HttpCode(200)
-    login(@Body('username') username: string, @Body('password') password:string ){
+    login(
+        @Body('username') username: string,
+        @Body('password') password: string,
+    ) {
+        const enviaUsername = username;
+        const enviaPassword = password;
+        const enviarParametros = enviaPassword && enviaUsername;
 
-        const enviarUsername = username;
-        const enviarPassword = password;
-        const enviarParametros = enviarPassword && enviarUsername;
+        if (enviarParametros) {
+            if (username === 'adrianeguez' &&
+                password === '1234') {
 
-        if (enviarParametros){
-            if (username === 'adrianeguez' && password === '1234'){
-                const payload ={username: username};
-                const respuesta = {jwt: this._jwtService.emitirToken(payload)};
-                return respuesta;
-            } else{
-                throw new BadRequestException({mensaje:'Credenciales invalidas'})
+                const payload = {
+                    username: username
+                };
+
+                const respuestaToken = {
+                    jwt: this._jwtService.emitirToken(payload)
+                };
+
+                return respuestaToken;
+
+            } else {
+                throw new BadRequestException({
+                    mensaje: 'Credenciales invalidas'
+                })
             }
-        } else{
-            throw new BadRequestException({mensaje:'No envio parametros'})
+
+        } else {
+            throw new BadRequestException({
+                mensaje: 'No envia parametros'
+            })
         }
 
     }
 
     @Post('verificarJWT')
     @HttpCode(200)
-    verificarJWT(@Body('jwt') jwt: string){
+    verificarJWT(
+        @Body('jwt') jwt: string,
+    ): any {
         const tieneParametros = jwt;
-
-        if (tieneParametros){
-            this._jwtService.verificarToken(jwt,(error,data)=>{
-                if (error){
-                    throw new BadRequestException({
-                        mensaje: 'JWT invalido',
-                        error: error})
-                } else{
-                    return{
-                        mensaje:'ok',
-                        data: data
+        if (tieneParametros) {
+            this._jwtService
+                .verificarToken(
+                    jwt,
+                    (error, data) => {
+                        if (error) {
+                            throw new BadRequestException(
+                                {
+                                    mensaje: 'Jwt invalido',
+                                    error: error
+                                }
+                            )
+                        } else {
+                            return {
+                                mensaje: 'Ok',
+                                data: data
+                            }
+                        }
                     }
+                )
+        } else {
+            throw new BadRequestException(
+                {
+                    mensaje: 'No envia jwt'
                 }
-            })
-        } else{
-            throw new BadRequestException({mensaje: 'no envio jwt'})
+            )
         }
+
     }
 
 }
