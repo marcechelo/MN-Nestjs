@@ -9,9 +9,11 @@ export class JwtService {
 
     emitirToken(payload: any){
         return this.jwt.sign({
+            payload: payload
+            },
+            this.secreto,{
             expiresIn: this.tiempoVidaToken,
-            data:payload},
-            this.secreto);
+            });
      }
 
      verificarToken(token: string, callback){
