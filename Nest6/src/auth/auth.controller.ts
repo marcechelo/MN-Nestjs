@@ -30,7 +30,17 @@ export class AuthController {
                     jwt: this._jwtService.emitirToken(payload)
                 };
 
-                return respuestaToken;
+                return `
+                <html>
+                <head>
+                    <title>Inicio</title>
+                </head>
+                <body>
+                    <h1>Bienvenido al sistema</h1>
+                    <p>Su token es: ${respuestaToken.jwt}</p>
+                </body>
+                </html>            
+                `; //template string
 
             } else {
                 throw new BadRequestException({

@@ -1,4 +1,4 @@
-import {Get, Controller, ReflectMetadata, UseGuards} from '@nestjs/common';
+import {Get, Controller, ReflectMetadata, UseGuards, Req, Res} from '@nestjs/common';
 import { AppService } from './app.service';
 import {JwtGuard} from "./guards/jwt.guard";
 
@@ -9,9 +9,9 @@ export class AppController {
     }
 
     @Get()
-    @ReflectMetadata("nesecitaProteccion", false)
-    root(): string {
-        return this.appService.root();
+    root(@Req() request, @Res() response) {
+        response.set('x-frame-options','SAMEORIGIN');
+        return response.send('Hello World!');
     }
 
     @Get('hola')
